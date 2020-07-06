@@ -12,8 +12,16 @@ class Stack
 	public boolean isEmpty() {return top == -1;}
 	public boolean isFull() {return top == list.length;}
 	
-	public void push(int data) {list[++top] = data;}
-	public int pop() {return list[top--];}
+	public void push(int data) 
+	{
+		if(this.isFull()) {return;}
+		else {list[++top] = data;}
+	}
+	public int pop() 
+	{	
+		if(this.isEmpty()) {return 0;}
+		else {return list[top--];}
+	}
 	
 	public void printStack()
 	{
@@ -42,8 +50,16 @@ class Queue
 	public boolean isEmpty() {return front == rear;}
 	public boolean isFull() {return rear == list.length;}
 	
-	public void enQueue(int data) {list[rear++] = data;}
-	public int deQueue() {return list[front++];}
+	public void enQueue(int data)
+	{
+		if(this.isFull()) {return;}
+		else {list[rear++] = data;}
+	}
+	public int deQueue()
+	{
+		if(this.isEmpty()) {return 0;}
+		else {return list[front++];}
+	}
 	
 	public void printQueue()
 	{
@@ -58,12 +74,69 @@ class Queue
 	}
 }
 
+class CircularQueue
+{
+	int[] list;
+	int front, rear, flag;
+	int size;
+	
+	public CircularQueue(int size)
+	{
+		list = new int[size];
+		front = 0; rear = 0;
+		flag = 0;
+		this.size = size;
+	}
+	
+	public boolean isEmpty() {return front==rear && flag == 0;}
+	public boolean isFull() {return front==rear && flag == 1;}
+	
+	public void enQueue(int value)
+	{
+		if(this.isFull()) {return;}
+		else
+		{
+			list[rear] = value;
+			rear = (rear+1)%size;
+			flag = 1;
+		}
+	}
+	public int deQueue()
+	{
+		int item;
+		if(this.isEmpty()) {return -1;}
+		else
+		{
+			item = list[front];
+			list[front] = 0;
+			front = (front+1)%size;
+			flag = 0;
+			return item;
+		}
+	}
+	
+	public void printQueue()
+	{
+		if(this.isEmpty()) {System.out.println("[ ]"); return;}
+		else
+		{
+			System.out.print("[ ");
+			for(int i=0; i<size; i++)
+			{
+				if(i == front) {System.out.print("*"+list[i]+" "); continue;}
+				else {System.out.print(list[i] + " ");}
+			}
+			System.out.println("]");
+		}
+	}
+}
 public class Stack_Queue
 {
 	public static void main(String[] args)
 	{
 		Stack s = new Stack(10);
 		Queue q = new Queue(10);
+		CircularQueue cq = new CircularQueue(10);
 		
 		s.push(3);   // stack = [3*]
 		s.push(4);   // stack = [3 4*]
@@ -85,5 +158,15 @@ public class Stack_Queue
 		q.deQueue();    // queue = [*4 5 2]
 		q.deQueue();    // queue = [*5 2]
 		q.printQueue();
+		
+		cq.enQueue(3);
+		cq.enQueue(4);
+		cq.enQueue(5);
+		cq.enQueue(2);
+		cq.printQueue();
+		
+		cq.deQueue();
+		cq.deQueue();
+		cq.printQueue();
 	}
 }
