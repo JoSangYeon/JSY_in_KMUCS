@@ -1,11 +1,13 @@
+import java.lang.Object;
+
 class Stack
 {
-	int[] list;
+	Object[] list;
 	int top;
 	
 	public Stack(int size)
 	{
-		list = new int[size];
+		list = new Object[size];
 		top = -1;
 	}
 
@@ -17,7 +19,7 @@ class Stack
 		if(this.isFull()) {return;}
 		else {list[++top] = data;}
 	}
-	public int pop() 
+	public Object pop() 
 	{	
 		if(this.isEmpty()) {return 0;}
 		else {return list[top--];}
@@ -38,12 +40,12 @@ class Stack
 
 class Queue
 {
-	int[] list;
+	Object[] list;
 	int front, rear;
 	
 	public Queue(int size)
 	{
-		list = new int[size];
+		list = new Object[size];
 		front = rear = 0;
 	}
 	
@@ -55,7 +57,7 @@ class Queue
 		if(this.isFull()) {return;}
 		else {list[rear++] = data;}
 	}
-	public int deQueue()
+	public Object deQueue()
 	{
 		if(this.isEmpty()) {return 0;}
 		else {return list[front++];}
@@ -76,13 +78,13 @@ class Queue
 
 class CircularQueue
 {
-	int[] list;
+	Object[] list;
 	int front, rear, flag;
 	int size;
 	
 	public CircularQueue(int size)
 	{
-		list = new int[size];
+		list = new Object[size];
 		front = 0; rear = 0;
 		flag = 0;
 		this.size = size;
@@ -101,14 +103,14 @@ class CircularQueue
 			flag = 1;
 		}
 	}
-	public int deQueue()
+	public Object deQueue()
 	{
-		int item;
+		Object item;
 		if(this.isEmpty()) {return -1;}
 		else
 		{
 			item = list[front];
-			list[front] = 0;
+			list[front] = null;
 			front = (front+1)%size;
 			flag = 0;
 			return item;
@@ -123,6 +125,7 @@ class CircularQueue
 			System.out.print("[ ");
 			for(int i=0; i<size; i++)
 			{
+				if(list[i]==null) {continue;}
 				if(i == front) {System.out.print("*"+list[i]+" "); continue;}
 				else {System.out.print(list[i] + " ");}
 			}
