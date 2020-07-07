@@ -39,9 +39,7 @@ public class FormulaExpression
 				break;
 			case '*': case '/': case '+': case '-':
 				if(priority(splitStr[i]) > priority((char)st.getTop()))
-				{
-					st.push(splitStr[i]);
-				}
+					{st.push(splitStr[i]);}
 				else
 				{
 					result += st.pop();
@@ -59,9 +57,61 @@ public class FormulaExpression
 		return result;
 	}
 	
+	public static int Eval(String str)
+	{
+		char[] strArr = str.toCharArray();
+		Stack st = new Stack(strArr.length);
+		
+		int result = 0;
+		int op1, op2;
+		
+		for(int i=0; i<strArr.length; i++)
+		{
+			switch(strArr[i])
+			{
+			case '*':
+				op2 = (int)st.pop();
+				op1 = (int)st.pop();
+				st.push(op1 * op2);
+				break;
+			case '/':
+				op2 = (int)st.pop();
+				op1 = (int)st.pop();
+				st.push(op1 / op2);
+				break;
+			case '+':
+				op2 = (int)st.pop();
+				op1 = (int)st.pop();
+				st.push(op1 + op2);
+				break;
+			case '-':
+				op2 = (int)st.pop();
+				op1 = (int)st.pop();
+				st.push(op1 - op2);
+				break;
+			default:
+				st.push(strArr[i] - '0');
+				break;
+			}
+		}
+		result = (int)st.pop();
+		return result;
+	}
+	
 	public static void main(String[] args)
 	{
+		/*
 		String str = "3+(4+2)+1";
-		System.out.println(InfixToPostfix(str));
+		System.out.println(InfixToPostfix(str)); //342++1+
+		*/
+		
+		String infix = "(7*8-(2+3))/5";
+		System.out.println("Infix: " + infix); //Infix: (7*8-(2+3))/5
+		
+		String postfix = InfixToPostfix(infix);
+		System.out.println("Postfix: " + postfix); //Postfix: 78*23+-5/
+		
+		System.out.println("Result= "+ Eval(postfix)); //Result= 10
+
 	}
 }
