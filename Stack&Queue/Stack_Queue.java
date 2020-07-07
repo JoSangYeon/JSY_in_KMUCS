@@ -2,8 +2,8 @@ import java.lang.Object;
 
 class Stack
 {
-	Object[] list;
-	int top;
+	private Object[] list;
+	private int top;
 	
 	public Stack(int size)
 	{
@@ -14,7 +14,13 @@ class Stack
 	public boolean isEmpty() {return top == -1;}
 	public boolean isFull() {return top == list.length;}
 	
-	public void push(int data) 
+	public Object getTop() 
+	{
+		if(this.isEmpty()) {return 'N';}
+		else {return list[top];}
+	}
+	
+	public void push(Object data) 
 	{
 		if(this.isFull()) {return;}
 		else {list[++top] = data;}
@@ -36,6 +42,7 @@ class Stack
 			System.out.println(list[top]+"* ]");
 		}
 	}
+
 }
 
 class Queue
@@ -52,7 +59,7 @@ class Queue
 	public boolean isEmpty() {return front == rear;}
 	public boolean isFull() {return rear == list.length;}
 	
-	public void enQueue(int data)
+	public void enQueue(Object data)
 	{
 		if(this.isFull()) {return;}
 		else {list[rear++] = data;}
@@ -93,12 +100,12 @@ class CircularQueue
 	public boolean isEmpty() {return front==rear && flag == 0;}
 	public boolean isFull() {return front==rear && flag == 1;}
 	
-	public void enQueue(int value)
+	public void enQueue(Object data)
 	{
 		if(this.isFull()) {return;}
 		else
 		{
-			list[rear] = value;
+			list[rear] = data;
 			rear = (rear+1)%size;
 			flag = 1;
 		}
