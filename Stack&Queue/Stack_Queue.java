@@ -27,7 +27,7 @@ class Stack
 	}
 	public Object pop() 
 	{	
-		if(this.isEmpty()) {return 0;}
+		if(this.isEmpty()) {return null;}
 		else {return list[top--];}
 	}
 	
