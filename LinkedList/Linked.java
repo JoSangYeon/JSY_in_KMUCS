@@ -1,7 +1,6 @@
 /*
- * Singly Linked List 备泅
- * ADT:
- * 		积己磊
+ * Singly Linked List 备泅窍扁
+ * ADT:		积己磊
  * 		Insert
  * 		Delete
  * 		Search
