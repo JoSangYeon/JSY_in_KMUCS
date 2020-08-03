@@ -27,3 +27,9 @@
 5일차(2020.07.21)
 
 + Doubly Linked List 구현
+
+6일차(2020.08.03)
+
++ Tree 구현(DLL 응용)
++ Tree 순회 구현(inoder, postoder, preoder)
++ BST구현(ADT: insert, delete, search, draw)
