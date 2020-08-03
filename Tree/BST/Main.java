@@ -12,9 +12,12 @@ public class Main
 		t1.insertData(15);
 		t1.insertData(2);
 		
+		t1.searchData(30);
+		t1.searchData(3330);
+		
 		t1.drawTree();
 		System.out.println();
-		
+				
 		t1.deleteData(2);
 		t1.drawTree();
 		System.out.println();
@@ -24,5 +27,29 @@ public class Main
 		t1.deleteData(30);
 		t1.drawTree();
 		System.out.println();
+		
+		/* 
+30 Found!!
+Not found
+
+    30\
+        15
+10<
+    5\
+        2
+-----------------
+    30\
+        15
+10<
+    5
+-----------------
+    30\
+        15
+5/
+-----------------
+    15
+5/
+-----------------
+		 */
 	}
 }

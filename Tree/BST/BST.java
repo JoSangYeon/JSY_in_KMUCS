@@ -16,6 +16,18 @@ public class BST
 		else {this.delete(root, data);}
 	}
 	
+	public void searchData(int data)
+	{
+		if(this.isEmpty()) {System.out.println("Tree is empty");}
+		else
+		{
+			Node temp = search(root, data);
+			
+			if(temp != null)
+			{System.out.println(data+" Found!!");}
+		}
+	}
+	
 	public void drawTree()
 	{
 		if(this.isEmpty()) {System.out.println("Tree is empty");}
@@ -62,6 +74,18 @@ public class BST
 				temp.left = delete(temp.left, temp.data);
 				
 			}
+		}
+		return temp;
+	}
+	
+	private Node search(Node temp, int data)
+	{
+		if(temp == null) {System.out.println("Not found"); return null;}
+		else
+		{
+			if(data == temp.data) {return temp;}
+			else if(data > temp.data) {return search(temp.right, data);}
+			else if(data < temp.data) {return search(temp.left, data);}
 		}
 		return temp;
 	}
