@@ -10,7 +10,6 @@ public class Main
 		t1.print(0);
 		t1.print(-1);
 		t1.print(1);
-		
 		/*
 		 * Inoder: 3 + 5 + 4 
 		 * Postoder: 3 5 + 4 + 
@@ -18,5 +17,12 @@ public class Main
 		 */
 		
 		t1.draw();
+		/*
+		     4 
+		+ <
+        		5 
+   			+ <
+        		3 
+		 */
 	}
 }
