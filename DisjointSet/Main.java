@@ -46,15 +46,49 @@ public class Main
 	
 	public static void main(String[] args)
 	{
+		UnionFind data = new UnionFind(list);
+		
+		System.out.print("연결 전: ");
+		data.print();
+		
+		//노드 연결: 0-1-2-3, 4-5-6-7, 8-9
+		
+		data.union(0, 1);
+		data.union(1, 2);
+		data.union(2, 3);
+		
+		data.union(4, 5);
+		data.union(5, 6);
+		data.union(6, 7);
+		
+		data.union(8, 9);
+		
+		System.out.print("연결 후:");
+		data.print();
+		
+		System.out.println("노드 0과 노드 3은 연결 되어 있는가?: " + data.isSameParent(0, 3));
+		System.out.println("노드 5과 노드 7은 연결 되어 있는가?: " + data.isSameParent(5, 7));
+		System.out.println("노드 2과 노드 8은 연결 되어 있는가?: " + data.isSameParent(2, 8));
+		
+		/* 실행 결과
+연결 전: [ 0 1 2 3 4 5 6 7 8 9 ]
+연결 후:[ 0 0 0 0 4 4 4 4 8 8 ]
+노드 0과 노드 3은 연결 되어 있는가?: true
+노드 5과 노드 7은 연결 되어 있는가?: true
+노드 2과 노드 8은 연결 되어 있는가?: false
+		 */
+		
+		
+		/*	
 		for(int a: list)
 			System.out.print(a+" ");
 		System.out.println();
 		
-		/*		 
+			 
 		list[2] = find(list,2);
 		list[3] = find(list,3);
 		list[4] = find(list,4);
-		*/
+		
 		
 		link(list, 0, 1);
 		link(list, 1, 2);
@@ -69,5 +103,10 @@ public class Main
 		for(int a: list)
 			System.out.print(a+" ");
 		System.out.println();
+		
+		//출력 결과
+		//0 1 2 3 4 5 6 7 8 9 
+		//0 0 0 0 4 4 4 4 8 8 
+		*/
 	}
 }
