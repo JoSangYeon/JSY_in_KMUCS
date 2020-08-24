@@ -21,12 +21,15 @@ public class Main
 		h.insert(9);
 		h.insert(10);
 		
+		
+		System.out.println("find(5): "+h.find(5));
 		h.print();		
 		
 		h.delete(5);
 		h.delete(10);
 		System.out.println();
-		h.print();		
+		System.out.println("find(5): "+h.find(5));
+		h.print();
 	}
 }
 /*
