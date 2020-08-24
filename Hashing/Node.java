@@ -9,4 +9,7 @@ public class Node
 		data = d;
 		link = null;
 	}
+	
+	public String toString()
+	{return Integer.toString(data);}
 }
