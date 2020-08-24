@@ -52,13 +52,33 @@ public class Hash
 		}
 	}
 	
+	public boolean find(int key)
+	{
+		int idx = this.hasingFunc(key);
+		boolean result = false;
+		
+		if(Table[idx] == null) {result = false;}
+		else
+		{
+			Node p = Table[idx];
+			
+			while(p.link != null && p.data != key)
+				{p = p.link;}
+			
+			if(p.data == key) {result = true;}
+			else {result = false;}
+		}
+		
+		return result;
+	}
+	
 	public void print()
 	{
 		for(int i=0; i<size; i++)
 		{
 			Node p = Table[i];
 			System.out.print("idx "+i+": [ ");
-			while(p != null) {System.out.print(p.data+" "); p = p.link;}
+			while(p != null) {System.out.print(p+" "); p = p.link;}
 			System.out.println("]");
 		}
 	}
