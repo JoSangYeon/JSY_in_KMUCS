@@ -46,6 +46,26 @@
 예제 출력 1
 2
 Poor KCM
+
+예제입력 2
+1
+3 100 3
+1 2 51 1
+2 3 51 1
+1 3 3 30
+
+예제출력 2
+30
+
+예제입력 3
+1
+3 6 3
+1 2 3 3
+2 3 3 3
+1 3 6 5
+
+예제출력 3
+5
 """
 """
 JSY : 일단 Cost최소화 말고 Time최소화만 하는 일반적인 다익스트라 알고리즘을 풀어보자
@@ -64,34 +84,118 @@ JSY : 예제로 준 샘플은 맞게 나오지만, 결과는 아마 틀릴것이
     즉, 지금 코드는 소요시간만 짧은 경로를 탐색하는 알고리즘이고,
         소요시간도 짧고 소요비용도 적은 알고리즘을 구현해야한다.
     이 문제에서 중요한 점 : 소요시간은 짧지만 비용이 비싼경우,와 소요시간은 길지만 비용이 싼경우를 모두 고려해야한다.
-    이걸 적용하려면 어떻게 해야될까... ㅋ_ㅋ
+    이걸 적용하려면 어떻게 해야될까... ㅋ_ㅋ 
+        => 왠지 DP일거 같긴한데, min(distance[there], there_cost) 이런식?
+        => 그러면 점화식을 구해야 되는데, 점화식이 떠오르지가 않음 ㅋㅋㅋ
+----------------------------------------------------------------------------------
+2021.11.15
+DP로 문제를 해결
+소비되는 cost당 공항(vertex)에서의 소비된 시간을 저장하는
+DP = (n+1) x (m+1) 행렬((주어진 공항 개수+1) x (소지한 금액+1))을 정의한다.
+가령, DP[v][c] = d의 의미는 "c원으로 v공항까지 가는데 소요되는 시간은 d"이다.
+    ex) DP[1][0] = 0
+        : 0원으로 1번 공항까지 가는데 소요되는 시간은 0시간이다.
+            => 문제에서 시작 시 있는 공항은 1번 공항이므로 소요되는 금액과 시간이 모두 0인 것이다.
+        DP[2][3] = 5
+        : 3원으로 2번 공항까지 가는데 소요되는 시간은 5시간이다.
+        
+그렇다면 DP에 사용되는 점화식은 무엇이냐,
+    calc(here, now_cost, there, there_cost, there_time) =
+        min(DP[there][now_cost + there_cost], DP[here][now_cost] + there_time)이다.
+    here : 현재 vertex(현재 있는 공항)
+    now_cost : 현재까지 사용한 요금
+    there : 이동 할(목표) 공항
+    there_cost : 이동 할(목표) 공항까지 드는 요금(cost)
+    there_time : 이동 할(목표) 공항까지 걸리는 시간(time)
+즉, 현재까지 알고 있는 목표 공항까지의 소비시간과 새롭게 알아낸 경로를 통해 계산된 소비시간을 계산하여 DP 배열을 갱신한다.
+
+구현은 다음과 같다.
+3개의 for문을 사용하는데,
+첫번째 for문은 Cost(금액)로 탐색(DP의 열)한다.
+두번째 for문은 vertex(공항)로 탐색을 한다.
+마지막 for문은 해당 vertex로 부터 출발하는 모든 경로(문제의 입력)를 탐색한다.
+즉, Cost가 0원일때, vertex(행)에 값이 있다(= DP[v][0])는 의미는 해당하는 공항(v)에 이동된(될) 경로가 있다는 의미이므로
+해당 공항이 가지는 경로들을 탐색해서 DP를 갱신 할 수 있다.
+
+코드의 전체적인 흐름은,
+입력으로 들어온 경로정보(3개를) Graph의 형식으로 표현하고
+graph = [(there, there_cost, there_time)]
+DP = (n+1) x (m+1) 행렬을 생성한다.
+    이때 DP의 모든 원소는 inf 값으로 초기화 하고 DP[1][0]만 0으로 초기화한다.
+
+이후 3중 for문을 돌면서 DP의 값을 갱신한다.
+DP[here][now_cost]가 inf가 아니면 graph[here]에서 해당 vertex가 가지는 경로를 탐색한다.
+이후 now_cost와 there_cost의 합이 소지하고 있는 총 금액(m)보다 작은 경우에는 위에서 언급한 식을 대입한다. 
+        DP[there][now_cost+there_cost] = min(DP[there][now_cost + there_cost],
+                                             DP[here][now_cost] + there_time)
+
+예제
+1
+3 6 3
+1 2 3 3
+2 3 3 3
+1 3 6 5
+로 더 자세히 살펴보면,
+graph = [[], [(2, 3, 3), (3, 6, 5)], [(3, 3, 3)], []]이고,
+DP는 4x7 행렬이된다.(모든 원소는 inf)
+DP[1][0] = 0으로 초기화 하고 for 반복문으로 들어간다.
+(DP[1][0] = 0의 의미는 0원을 들여서 1번 공항으로 갈때 소요되는 시간이 0이라는 의미이다.)
+
+DP[here = 1][now_cost = 0]일때 값이 0이므로 graph[here]에서
+1번 vertex가 가지는 경로정보를 가져온다.
+[(2, 3, 3), (3, 6, 5)] 2개의 경로에 대해 DP 갱신을 진행하는데,
+    (2, 3, 3)에서는
+    1->2로 가는데, 3원과 3시간이 소비된다.
+    즉, min(DP[2][0+3], DP[1][0] + 3(there_time)) 된다.
+    초기 DP[2][0+3]은 inf이므로 새로운 값 DP[1][0] + 3 = 0 + 3이 된다.
+    (DP[2][3] = 3의 의미는 3원을 들여 2번 공항으로 가는데 소요되는 최소 시간은 3이라는 의미이다.)
+    (3, 6, 5)에서는
+    1->3으로 가는데, 6원과 5시간이 소비된다.
+    즉, min(DP[3][0+6], DP[1][0] + 5(there_time))이 된다.
+    이 또한 inf 값과 비교하기 때문에 DP[3][6]은 5가 된다.
+    (DP[3][6] = 5의 의미는 6원을 들여 3번 공항으로 갈는데 소요되는 최소 시간은 5라는 의미이다.)
+
+이후 for 반복내부에서 DP[here][now_cost]가 inf가 아닌 경우를 탐색한다.
+now_cost가 1일때와 2일때는 해당되는 경우가 없다가,,, now_cost가 3일때 DP[2][3]에서 걸리게된다.
+DP[2][3]은 here = 2, now_cost=3인데, 이 의미는 어찌 되었든 3원으로 2번 공항으로 가는 최소 시간이 3이라는 의미이므로
+최종 목적지인 3으로 가기 위한 경로를 계산해야 한다.
+
+2번 공항에서의 경로 정보를 가져와서 DP를 갱신을 진행한다.
+경로 정보는 [(3, 3, 3)]이고,
+    (3, 3, 3)에서는
+    2->3(here -> there)로 가는데, 3원과 3시간이 소비된다.
+    즉, min(DP[there][now_cost + there_cost], DP[here][now_cost] + there_time)을 적용하면
+        min(DP[3][3+3], DP[2][3] + 3)이다.
+    DP[3][6]은 위에서 계산한 값인 5가 들어있고 새롭게 계산된 경로값은 6이다.
+    5와 6중 작은 5값을 고르게 된다.
+
+이후 for 반복은 now_cost가 4,5일떄 까진 의미 없이 돌다가 
+now_cost가 6일때, DP[3][6]에서 걸리게 되는데, 3번 공항에서는 더이상 경로가 존재하지 않으므로 모든 반복이 종료된다.
+
+이후 return 값은 DP[n]의 최소값을 리턴하게 되고
+그 리턴값이 inf라면 경로가 없는 것이므로 "POOR KCM"을 출력하고 아니라면 그 값을 출력한다.
 """
 import sys
 import math
-import heapq
-
-def init_source(n):
-    distance = [math.inf for _ in range(n+1)]
-    distance[1] = 0
-    visited = [False for _ in range(n+1)]
-    return distance, visited
 
 def calc(graph, n, m):
-    time, visited = init_source(n)
-    Q = []
-    heapq.heappush(Q, (time[1], 1))
+    # (n+1) x (m+1) 행렬 = (주어진 공항 개수+1) x (소지한 금액+1)
+    DP = [[math.inf for _ in range(m+1)] for _ in range(n+1)]
+    # 0원으로 1공항까지 가는 시간은 0
+    DP[1][0] = 0
 
-    while Q:
-        here_weight, here = heapq.heappop(Q)
-        if visited[here]: continue
+    for now_cost in range(m+1):
+        for here in range(1, n+1):
+            if DP[here][now_cost] == math.inf:
+                continue
+            for there, there_cost, there_time in graph[here]:
+                if now_cost+there_cost > m:
+                    continue
+                else:
+                    DP[there][now_cost+there_cost] = min(DP[there][now_cost + there_cost],
+                                                         DP[here][now_cost] + there_time)
 
-        for there,cost, weight in graph[here]:
-            there_weight = here_weight + weight
-            if time[there] > there_weight:
-                time[there] = there_weight
-                heapq.heappush(Q, (time[there], there))
-    return time[1:]
-
+    return min(DP[n])
 
 if __name__ == "__main__":
     t = int(input())
@@ -103,7 +207,7 @@ if __name__ == "__main__":
             graph[s].append((d, cost, time))
 
         result = calc(graph, n, m)
-        if result[-1] <= m:
-            print(result[-1])
-        else:
+        if result == math.inf:
             print("Poor KCM")
+        else:
+            print(result)
