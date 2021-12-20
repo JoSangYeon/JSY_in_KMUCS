@@ -1,12 +1,19 @@
-def hanoi_tower(n, a, b, c):
-    if n > 0:
-        hanoi_tower(n - 1, a, c, b)
-        print("{} -> {}".format(a, c))
-        hanoi_tower(n - 1, b, a, c)
+def calc(arr):
+    cnt = 1
 
+    sf = arr[0][1]
+    for i in range(1, len(arr)):
+        if sf <= arr[i][0]:
+            sf = arr[i][1]
+            cnt += 1
+    return cnt
 
-n = int(input())
-for i in range(n):
-    num_of_disks, k = map(int, input().split())
-    m = 0
-    hanoi_tower(num_of_disks, 1, 2, 3)
+def solution(arr):
+    # arr을 종료시간을 기준으로 정렬
+    sort_key = lambda x : (x[1], x[0])
+
+    arr = sorted(arr, key=sort_key)
+    return calc(arr)
+
+if __name__ == "__main__":
+    print(solution([[1, 7],[1, 2],[4, 5]]))
