@@ -1,4 +1,5 @@
 // https://www.acmicpc.net/problem/2586
+// 소방차
 #include <iostream>
 #include <cmath>
 #include <vector>

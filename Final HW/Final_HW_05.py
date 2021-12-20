@@ -1,6 +1,6 @@
 """
 https://www.acmicpc.net/problem/2156
-
+포도주 시식
 점화식 :
     P(n) =
         0 (if n == 0)

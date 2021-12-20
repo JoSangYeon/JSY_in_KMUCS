@@ -31,7 +31,6 @@ dp[now]가 일반마을일때 일반 마을 다음에는 우수마을이 올 수
 dp[now][0] += max(dp[next][0], dp[next][1])
 dp[now][1] += dp[next][0]
 """
-### 이건 풀지말까 생각 중ㅋㅋㅋ ###
 import sys
 
 def calc(now):

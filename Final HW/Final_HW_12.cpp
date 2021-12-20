@@ -1,4 +1,5 @@
 // https://www.acmicpc.net/problem/23248
+// 트레쉬 헌터
 #include <iostream>
 #include <cmath>
 #include <vector>

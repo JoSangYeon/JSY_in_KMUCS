@@ -1,5 +1,6 @@
 """
 https://www.acmicpc.net/problem/1463
+1로 만들기
 
 점화식 :
 P(n) = 1 (if n = 2 or 3)

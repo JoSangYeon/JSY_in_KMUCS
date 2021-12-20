@@ -1,5 +1,5 @@
 // https://programmers.co.kr/learn/courses/30/lessons/42627
-
+// HDD 컨트롤러
 #include <string>
 #include <bits/stdc++.h>
 #include <vector>

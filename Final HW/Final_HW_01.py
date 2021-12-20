@@ -1,3 +1,4 @@
+# 가장 많은 물을 담아보자
 import sys
 def get_max_area(arr):
     res = 0
